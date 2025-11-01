@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Download, RotateCcw } from 'lucide-react';
+import { Upload, Download, RotateCcw, StepBack, ArrowLeft } from 'lucide-react';
 import './App.css'; // Importing the standard CSS
 
 export default function App() {
@@ -18,13 +18,13 @@ export default function App() {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setOriginalSize((file.size / 1024).toFixed(2));
       const reader = new FileReader();
       reader.onload = (event) => {
         const img = new Image();
         img.onload = () => {
           originalImageRef.current = img;
           setImage(img);
+          setOriginalSize((file.size / 1024).toFixed(2));
         };
         img.src = event.target.result;
       };
@@ -39,8 +39,8 @@ export default function App() {
       const img = new Image();
       img.onload = () => {
         originalImageRef.current = img;
-        setOriginalSize((file.size / 1024).toFixed(2));
         setImage(img);
+        setOriginalSize((file.size / 1024).toFixed(2));
       };
       img.src = URL.createObjectURL(file);
     }
@@ -110,6 +110,12 @@ export default function App() {
     }
   }, [image, temperature, tint, brightness, contrast, saturation, quality]);
 
+  const handleBack = () => {
+    setImage(null);
+    setFileSize(null);
+    setOriginalSize(null);
+  }
+
   const handleReset = () => {
     setTemperature(0);
     setTint(0);
@@ -118,6 +124,7 @@ export default function App() {
     setSaturation(0);
     setQuality(90);
   };
+
 
   const handleDownload = () => {
     if (canvasRef.current) {
@@ -300,6 +307,16 @@ export default function App() {
 
               {/* Action Buttons */}
               <div className="action-buttons-group">
+                {/* Back */}
+                <button
+                  onClick={handleBack}
+                  className="button reset-button"
+                >
+                  <ArrowLeft className="icon" />
+                  Reset
+                </button>
+
+                {/* Reset */}
                 <button
                   onClick={handleReset}
                   className="button reset-button"

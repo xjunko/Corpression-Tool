@@ -14,7 +14,6 @@ export default function App() {
   const [originalSize, setOriginalSize] = useState(null);
   const canvasRef = useRef(null);
   const originalImageRef = useRef(null);
-  const [isDragging, setIsDragging] = useState(false);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -35,7 +34,6 @@ export default function App() {
 
   const handleImageDrop = (e) => {
     e.preventDefault();
-    setIsDragging(false);
     const file = e.dataTransfer.files?.[0];
     if (file && file.type.startsWith("image/")) {
       const img = new Image();
@@ -50,12 +48,8 @@ export default function App() {
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    setIsDragging(true);
   };
 
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
 
 
   useEffect(() => {
@@ -156,10 +150,11 @@ export default function App() {
 
         {!image ? (
           <div className="upload-container-wrapper">
-            <label className="upload-label"
+            <label
+              className="upload-label"
               onDrop={handleImageDrop}
               onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}>
+            >
 
               <Upload className="upload-icon" />
 
@@ -334,6 +329,6 @@ export default function App() {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 }
